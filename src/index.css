@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+:root {
+  --radius-outer: 28px;
+  --radius-inner: 12px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'PlusJakarta', sans-serif;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'PlusJakarta', sans-serif;
+}
+
+@media screen and (min-width: 768px) {
+  :root {
+    --radius-outer: 32px;
+    --radius-inner: 12px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+  }
+}
+
+@theme {
+  --color-primary: #0F131A;
+  --color-secondary: #171C23;
+  --color-accent: #007AFF;
+  --color-warning: #D8A600;
+  --color-danger: #FF393D;
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: rgba(245, 245, 245, 0.4);
+  --color-border: rgba(245, 245, 245, 0.24);
+
+  --radius-outer: var(--radius-outer);
+  --radius-inner: var(--radius-inner);
+}
+
+.blue-shadow {
+  box-shadow: 0px 0px 40px 6px var(--color-accent);
+}
+.yellow-shadow {
+  box-shadow: 0px 0px 40px 6px var(--color-warning);
+}
+.red-shadow {
+  box-shadow: 0px 0px 40px 6px var(--color-danger);
+}
+
+html, body {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  font-family: 'PlusJakarta', sans-serif;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Custom sleek scrollbar for both vertical and horizontal scrolling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+/* The scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 245, 245, 0.24);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 245, 245, 0.4);
+}
+
+/* Ensure the gutter space is preserved */
+* {
+  scrollbar-gutter: stable;
+}
+  

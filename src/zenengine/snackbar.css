@@ -1,0 +1,43 @@
+/*Snackbar Styles*/
+/*Lines that has comment is safe to modify.*/
+
+.snackbar {
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9999;
+
+  position: fixed;
+  bottom: -60px; /*You can change this carefully!*/
+  right: 15px;  /*Positioned 15px from right by default. Change this based on yuor needs.*/
+
+  width: max-content; /*Changable.*/
+  height: 52px; /*Changable*/
+
+  padding: 8px 24px 8px 16px; /*Changable*/
+
+  background-color: var(--color-secondary); /*Changable*/
+  box-shadow: 0px 0px 16px -4px #000000; /*Optional, changable*/
+
+  border-radius: 15px; /*Changable*/
+
+  font-size: 17px; /*Changable*/
+  font-weight: 500; /*Optional, changable*/
+  color: var(--color-text-primary);
+
+  display: flex;
+  gap: 12px;
+  align-items: center; /*Text is positioned center VERTICALLY by default. Optional, changable.*/
+
+  filter: blur(15px);
+
+  transition: 0.5s cubic-bezier(.38,.09,.24,.98);
+}
+
+.snackbar.show {
+  visibility: visible;
+  opacity: 1;
+
+  bottom: 15px; /*You can change this carefully!*/
+
+  filter: blur(0px);
+}

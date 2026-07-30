@@ -1,0 +1,38 @@
+{
+  "ZenCore": {
+    "app_name": "ZenCore",
+    "app_url": "https://zenxync.github.io/zencore",
+    "app_icon_url": "https://raw.githubusercontent.com/ZenxyNC/zendocs/refs/heads/main/public/resources/AppIcon/zencore.png",
+    "release_date": {
+      "day": "6",
+      "month": "June",
+      "year": "2025"
+    },
+    "last_updated": {
+      "day": "26",
+      "month": "June",
+      "year": "2026"
+    },
+    "current_version": "2.3.1",
+    "status": "online",
+    "description": "Productivity suite for ZenApps"
+  },
+  "ZenEngine": {
+    "app_name": "ZenEngine",
+    "app_url": "https://zenxync.github.io/zenengine",
+    "app_icon_url": "https://raw.githubusercontent.com/ZenxyNC/zendocs/refs/heads/main/public/resources/AppIcon/zenengine.png",
+    "release_date": {
+      "day": "25",
+      "month": "March",
+      "year": "2025"
+    },
+    "last_updated": {
+      "day": "16",
+      "month": "January",
+      "year": "2026"
+    },
+    "current_version": "2.4.0",
+    "status": "offline",
+    "description": "High performance game engine for Web"
+  }
+}
