@@ -24,6 +24,7 @@ export default function Profile() {
       }
     }
     catch(error) {
+      console.error("An error occured while fetching User Info: ", error);
       return {
         username: "Log in",
         initial: "?",

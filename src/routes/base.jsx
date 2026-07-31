@@ -19,6 +19,7 @@ export default function Base() {
   const editMatch = useMatch("/application/edit/:app_name");
   const editAppName = editMatch?.params?.app_name ?? null;
   const devtools_FETCHAPI = true;
+  const allowAPIFetch = false;
   const [AppData, setAppData] = useState({});
   const [availabilityStatus, setAvailabilityStatus] = useState("not_available");
   const [originAvailabilityStatus, setOriginAvailabilityStatus] = useState("not_available");
@@ -46,15 +47,18 @@ export default function Base() {
         const findUser = data.record.users.find(user => user.username.toLowerCase() === JSON.parse(localUserInfo).username.toLowerCase());
         console.log('DB Fetched: user info');
         if(!findUser) {
-          window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
+          return window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
         }
 
         // Compare local-saved info and server-saved info
         if(JSON.parse(localUserInfo).password_hashed !== findUser.password_hashed) {
-          window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
+          return window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
         }
+
+        allowAPIFetch = true;
       } catch (error) {
         console.error("Error fetching user info from JSONBin:", error);
+        allowAPIFetch = false;
       }
     }
     validateUserInfo();
@@ -95,7 +99,7 @@ export default function Base() {
       }
     }
     
-    if(devtools_FETCHAPI) {
+    if(devtools_FETCHAPI && allowAPIFetch) {
       fetchApps();
       fetchAvailability();
     }
@@ -145,7 +149,7 @@ export default function Base() {
 
   // Listens to AppData changes
   useEffect(() => {
-    if (devtools_FETCHAPI && Object.keys(AppData).length > 0) {
+    if (devtools_FETCHAPI && allowAPIFetch && Object.keys(AppData).length > 0) {
       if (skipNextUpload.current) {
         skipNextUpload.current = false;
         return;
@@ -179,7 +183,7 @@ export default function Base() {
   // Listens to availabilityStatus changes
   useEffect(() => {
 
-    if (devtools_FETCHAPI && availabilityStatus !== originAvailabilityStatus) {
+    if (devtools_FETCHAPI && allowAPIFetch && availabilityStatus !== originAvailabilityStatus) {
       async function uploadAvailability() {
         try {
           const res = await fetch(import.meta.env.VITE_JSONBIN_AVAILABILITY_URL, {

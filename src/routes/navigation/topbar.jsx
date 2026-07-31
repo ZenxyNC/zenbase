@@ -2,6 +2,7 @@ import { useState } from "react"
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import Navigator from "./components/navigator";
 import Profile from "./components/profile";
+import ZenBase from "../../assets/ZenBase.png"
 
 export default function TopBar() {
   const [isOpened, setIsOpened] = useState(false)
@@ -15,7 +16,7 @@ export default function TopBar() {
     `}>
       <div className="h-15 flex justify-between items-start p-3">
         <a href="/zenbase/dashboard" className="flex items-center gap-3">
-          <img src="/ZenBase.png" alt="Logo" className="w-9" />
+          <img src={ZenBase} alt="Logo" className="w-9" />
           <h2 className="font-light">ZenBase</h2>
         </a>
         <button
