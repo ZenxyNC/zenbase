@@ -19,7 +19,6 @@ export default function Base() {
   const editMatch = useMatch("/application/edit/:app_name");
   const editAppName = editMatch?.params?.app_name ?? null;
   const devtools_FETCHAPI = true;
-  const [allowAPIFetch, setAllowAPIFetch] = useState(false);
   const [AppData, setAppData] = useState({});
   const [availabilityStatus, setAvailabilityStatus] = useState("not_available");
   const [originAvailabilityStatus, setOriginAvailabilityStatus] = useState("not_available");
@@ -55,101 +54,99 @@ export default function Base() {
           return window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
         }
 
-        setAllowAPIFetch(true);
+        fetchApps();
+        fetchAvailability();
       } catch (error) {
         console.error("Error fetching user info from JSONBin:", error);
-        setAllowAPIFetch(false);
       }
     }
     validateUserInfo();
   }, [])
 
-  useEffect(() => {
-    async function fetchApps() {
-      try {
-        const res = await fetch(import.meta.env.VITE_JSONBIN_URL, {
-          "method": "GET",
-          "headers": {
-            "X-Master-Key": import.meta.env.VITE_JSONBIN_MASTER_KEY
+  
+  async function fetchApps() {
+    try {
+      if(!devtools_FETCHAPI) {
+        setAppData({
+          "zencore": {
+            "app_name": "ZenCore",
+            "app_url": "https://zenxync.github.io/zencore",
+            "app_icon_url": "https://raw.githubusercontent.com/ZenxyNC/zendocs/refs/heads/main/public/resources/AppIcon/zencore.png",
+            "release_date": {
+              "day": "6",
+              "month": "6",
+              "year": "2025"
+            },
+            "last_updated": {
+              "day": "26",
+              "month": "6",
+              "year": "2026"
+            },
+            "current_version": "2.3.1",
+            "status": "online",
+            "description": "Productivity suite for ZenApps",
+            "changelogs": [
+              {
+                "version": "2.3.1",
+                "date": {
+                  "day": "26",
+                  "month": "6",
+                  "year": "2026"
+                },
+                "changes":[
+                  "changes-1",
+                  "changes-2",
+                  "changes-3",
+                  "changes-4",
+                  "changes-5"
+                ]
+              }
+            ]
           }
         });
-        const data = await res.json();
-        console.log('DB Fetched: apps');
-        skipNextUpload.current = true;
-        setAppData(data.record);
-      } catch (error) {
-        console.error("Error fetching apps from JSONBin:", error);
+        return;
       }
-    }
-
-    async function fetchAvailability() {
-      try {
-        const res = await fetch(import.meta.env.VITE_JSONBIN_AVAILABILITY_URL, {
-          "method": "GET",
-          "headers": {
-            "X-Master-Key": import.meta.env.VITE_JSONBIN_MASTER_KEY
-          }
-        });
-        const data = await res.json();
-        console.log('DB Fetched: availability');
-        setAvailabilityStatus(data.record.availability);
-        setOriginAvailabilityStatus(data.record.availability);
-      } catch (error) {
-        console.error("Error fetching availability from JSONBin:", error);
-      }
-    }
-    
-    if(devtools_FETCHAPI && allowAPIFetch) {
-      fetchApps();
-      fetchAvailability();
-    }
-    else {
-      setAppData({
-        "zencore": {
-          "app_name": "ZenCore",
-          "app_url": "https://zenxync.github.io/zencore",
-          "app_icon_url": "https://raw.githubusercontent.com/ZenxyNC/zendocs/refs/heads/main/public/resources/AppIcon/zencore.png",
-          "release_date": {
-            "day": "6",
-            "month": "6",
-            "year": "2025"
-          },
-          "last_updated": {
-            "day": "26",
-            "month": "6",
-            "year": "2026"
-          },
-          "current_version": "2.3.1",
-          "status": "online",
-          "description": "Productivity suite for ZenApps",
-          "changelogs": [
-            {
-              "version": "2.3.1",
-              "date": {
-                "day": "26",
-                "month": "6",
-                "year": "2026"
-              },
-              "changes":[
-                "changes-1",
-                "changes-2",
-                "changes-3",
-                "changes-4",
-                "changes-5"
-              ]
-            }
-          ]
+      const res = await fetch(import.meta.env.VITE_JSONBIN_URL, {
+        "method": "GET",
+        "headers": {
+          "X-Master-Key": import.meta.env.VITE_JSONBIN_MASTER_KEY
         }
-      
       });
-      setAvailabilityStatus("not_available");
-      setOriginAvailabilityStatus("not_available");
+      const data = await res.json();
+      console.log('DB Fetched: apps');
+      skipNextUpload.current = true;
+      setAppData(data.record);
+    } catch (error) {
+      console.error("Error fetching apps from JSONBin:", error);
     }
-  }, []);
+  }
+
+  async function fetchAvailability() {
+    try {
+      if(!devtools_FETCHAPI) {
+        setAvailabilityStatus("not_available");
+        setOriginAvailabilityStatus("not_available");
+        return;
+      }
+      const res = await fetch(import.meta.env.VITE_JSONBIN_AVAILABILITY_URL, {
+        "method": "GET",
+        "headers": {
+          "X-Master-Key": import.meta.env.VITE_JSONBIN_MASTER_KEY
+        }
+      });
+      const data = await res.json();
+      console.log('DB Fetched: availability');
+      setAvailabilityStatus(data.record.availability);
+      setOriginAvailabilityStatus(data.record.availability);
+    } catch (error) {
+      console.error("Error fetching availability from JSONBin:", error);
+    }
+  }
+  
 
   // Listens to AppData changes
   useEffect(() => {
-    if (devtools_FETCHAPI && allowAPIFetch && Object.keys(AppData).length > 0) {
+    if (devtools_FETCHAPI && Object.keys(AppData).length > 0) {
       if (skipNextUpload.current) {
         skipNextUpload.current = false;
         return;
@@ -183,7 +180,7 @@ export default function Base() {
   // Listens to availabilityStatus changes
   useEffect(() => {
 
-    if (devtools_FETCHAPI && allowAPIFetch && availabilityStatus !== originAvailabilityStatus) {
+    if (devtools_FETCHAPI && availabilityStatus !== originAvailabilityStatus) {
       async function uploadAvailability() {
         try {
           const res = await fetch(import.meta.env.VITE_JSONBIN_AVAILABILITY_URL, {
