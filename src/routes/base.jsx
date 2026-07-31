@@ -19,7 +19,7 @@ export default function Base() {
   const editMatch = useMatch("/application/edit/:app_name");
   const editAppName = editMatch?.params?.app_name ?? null;
   const devtools_FETCHAPI = true;
-  const allowAPIFetch = false;
+  const [allowAPIFetch, setAllowAPIFetch] = useState(false);
   const [AppData, setAppData] = useState({});
   const [availabilityStatus, setAvailabilityStatus] = useState("not_available");
   const [originAvailabilityStatus, setOriginAvailabilityStatus] = useState("not_available");
@@ -55,10 +55,10 @@ export default function Base() {
           return window.location.href = "https://zenxync.github.io/zenaccount/loginprovider?appOrigin=zenbase";
         }
 
-        allowAPIFetch = true;
+        setAllowAPIFetch(true);
       } catch (error) {
         console.error("Error fetching user info from JSONBin:", error);
-        allowAPIFetch = false;
+        setAllowAPIFetch(false);
       }
     }
     validateUserInfo();
